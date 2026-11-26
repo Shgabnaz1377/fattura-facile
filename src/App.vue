@@ -4,23 +4,26 @@ import { RouterLink, RouterView } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import ThemeSwitcher from './components/ThemeSwitcher.vue'
 import { useClientsStore } from './stores/clients'
+import { useInvoicesStore } from './stores/invoices'
 import { useProfileStore } from './stores/profile'
 
 const { t } = useI18n()
 const profile = useProfileStore()
 const clients = useClientsStore()
+const invoices = useInvoicesStore()
 const ready = ref(false)
 const loadError = ref('')
 
 const links = [
   { to: '/', label: 'nav.home' },
+  { to: '/invoices', label: 'nav.invoices' },
   { to: '/clients', label: 'nav.clients' },
   { to: '/profile', label: 'nav.profile' },
 ]
 
 onMounted(async () => {
   try {
-    await Promise.all([profile.load(), clients.load()])
+    await Promise.all([profile.load(), clients.load(), invoices.load()])
   } catch (err) {
     loadError.value = err instanceof Error ? err.message : String(err)
   } finally {

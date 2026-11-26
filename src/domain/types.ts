@@ -140,9 +140,17 @@ export interface Invoice extends InvoiceTaxOptions {
   dueDate: string
   clientId: string
   lines: InvoiceLine[]
+  /** Free text printed on the document and sent as FatturaPA Causale. */
   notes: string
   status: InvoiceStatus
   paidDate: string | null
+  /** Issuer and client data frozen when the invoice is issued, so later edits do not alter it. */
+  snapshot: InvoiceSnapshot | null
   createdAt: string
   updatedAt: string
+}
+
+export interface InvoiceSnapshot {
+  profile: BusinessProfile
+  client: Client
 }
