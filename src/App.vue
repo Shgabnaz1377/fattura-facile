@@ -1,11 +1,32 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import ThemeSwitcher from './components/ThemeSwitcher.vue'
+import { useClientsStore } from './stores/clients'
+import { useProfileStore } from './stores/profile'
 
 const { t } = useI18n()
+const profile = useProfileStore()
+const clients = useClientsStore()
+const ready = ref(false)
+const loadError = ref('')
 
-const links = [{ to: '/', label: 'nav.home' }]
+const links = [
+  { to: '/', label: 'nav.home' },
+  { to: '/clients', label: 'nav.clients' },
+  { to: '/profile', label: 'nav.profile' },
+]
+
+onMounted(async () => {
+  try {
+    await Promise.all([profile.load(), clients.load()])
+  } catch (err) {
+    loadError.value = err instanceof Error ? err.message : String(err)
+  } finally {
+    ready.value = true
+  }
+})
 </script>
 
 <template>
@@ -27,12 +48,14 @@ const links = [{ to: '/', label: 'nav.home' }]
     <nav class="sidenav" :aria-label="t('nav.main')">
       <ul>
         <li v-for="link in links" :key="link.to">
-          <RouterLink :to="link.to" active-class="" exact-active-class="active">{{ t(link.label) }}</RouterLink>
+          <RouterLink :to="link.to" :class="{ active: link.to === '/' ? $route.path === '/' : $route.path.startsWith(link.to) }">{{ t(link.label) }}</RouterLink>
         </li>
       </ul>
     </nav>
     <main id="main" class="content" tabindex="-1">
-      <RouterView />
+      <p v-if="loadError" class="notice" role="alert">{{ t('app.storageError') }} ({{ loadError }})</p>
+      <RouterView v-if="ready" :key="$route.fullPath" />
+      <p v-else class="muted" aria-live="polite">{{ t('common.loading') }}</p>
     </main>
   </div>
 </template>
