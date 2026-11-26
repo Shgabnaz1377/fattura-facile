@@ -1,7 +1,6 @@
 export default {
   app: {
     name: 'Fattura Facile',
-    tagline: 'Fatture e stime fiscali per partite IVA, tutto salvato nel tuo browser.',
     skipToContent: 'Vai al contenuto',
     storageError: 'Impossibile accedere al database locale del browser.',
   },
@@ -18,6 +17,9 @@ export default {
     system: 'Sistema',
     light: 'Chiaro',
     dark: 'Scuro',
+  },
+  language: {
+    label: 'Lingua',
   },
   common: {
     save: 'Salva',
