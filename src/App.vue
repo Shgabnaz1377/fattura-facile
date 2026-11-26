@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import LanguageSwitcher from './components/LanguageSwitcher.vue'
 import ThemeSwitcher from './components/ThemeSwitcher.vue'
 import { useClientsStore } from './stores/clients'
 import { useInvoicesStore } from './stores/invoices'
@@ -46,6 +47,7 @@ onMounted(async () => {
         <span>{{ t('app.name') }}</span>
       </RouterLink>
       <div class="topbar-tools">
+        <LanguageSwitcher />
         <ThemeSwitcher />
       </div>
     </header>

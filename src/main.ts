@@ -7,5 +7,6 @@ import { applyStoredTheme } from './composables/useTheme'
 import './styles/main.css'
 
 applyStoredTheme()
+document.documentElement.setAttribute('lang', i18n.global.locale.value)
 
 createApp(App).use(createPinia()).use(router).use(i18n).mount('#app')
