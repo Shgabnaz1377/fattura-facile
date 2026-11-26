@@ -283,4 +283,9 @@ export default {
     dateAfterNext: 'La data è successiva a quella della fattura n. {nextNumber} ({nextDate}).',
     yearMismatch: 'L’anno della data non corrisponde a quello del numero.',
   },
+  exports: {
+    title: 'Esporta',
+    pdf: 'Scarica PDF',
+    pdfDraft: 'Anteprima PDF (bozza)',
+  },
 }
