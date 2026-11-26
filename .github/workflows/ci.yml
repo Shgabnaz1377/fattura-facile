@@ -26,7 +26,11 @@ jobs:
         run: npm run lint
       - name: Type-check
         run: npm run typecheck
-      - name: Unit tests
+      - name: Fetch the official FatturaPA schema
+        run: npm run xsd:fetch
+      - name: Unit tests (including XSD validation)
         run: npm test
+        env:
+          REQUIRE_FATTURAPA_XSD: '1'
       - name: Build
         run: npx vite build
