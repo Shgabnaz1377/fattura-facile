@@ -143,6 +143,22 @@ async function downloadPdf(): Promise<void> {
   downloadBytes(await renderInvoicePdf(doc), doc.fileName, 'application/pdf')
 }
 
+async function downloadXml(): Promise<void> {
+  exportError.value = ''
+  if (!client.value) return
+  const [{ buildFatturaPA, FatturaPAError }, { downloadBytes }] = await Promise.all([
+    import('@/domain/fatturapa/fatturapa'),
+    import('@/pdf/invoicePdf'),
+  ])
+  try {
+    const { xml, fileName } = buildFatturaPA(invoice.value, profile.value, client.value)
+    downloadBytes(new TextEncoder().encode(xml), fileName, 'application/xml')
+  } catch (err) {
+    if (err instanceof FatturaPAError) exportError.value = t(`exports.errors.${err.code}`)
+    else throw err
+  }
+}
+
 function safeLineAmount(cents: number, qty: number): string {
   try {
     return fmt.euro(lineAmount(cents, qty))
@@ -317,6 +333,9 @@ function safeLineAmount(cents: number, qty: number): string {
           <section class="card exports" :aria-label="t('exports.title')">
             <h2>{{ t('exports.title') }}</h2>
             <button type="button" class="btn" :disabled="!client" @click="downloadPdf">{{ editable ? t('exports.pdfDraft') : t('exports.pdf') }}</button>
+            <button type="button" class="btn" :disabled="editable || !client" @click="downloadXml">{{ t('exports.xml') }}</button>
+            <p v-if="editable" class="muted small">{{ t('exports.xmlNeedsIssue') }}</p>
+            <p v-else class="muted small">{{ t('exports.xmlHint') }}</p>
             <p v-if="exportError" class="error-text" role="alert">{{ exportError }}</p>
           </section>
           <p v-if="forfettario" class="muted small">{{ t('invoices.forfettarioNote') }}</p>

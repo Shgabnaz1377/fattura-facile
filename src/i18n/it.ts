@@ -287,5 +287,14 @@ export default {
     title: 'Esporta',
     pdf: 'Scarica PDF',
     pdfDraft: 'Anteprima PDF (bozza)',
+    xml: 'Scarica XML FatturaPA',
+    xmlNeedsIssue: 'L’XML FatturaPA si genera dopo l’emissione.',
+    xmlHint:
+      'File FPR12 da caricare sul portale Fatture e Corrispettivi o da inviare tramite il tuo intermediario: questa app non trasmette nulla allo SDI.',
+    errors: {
+      notIssued: 'Emetti la fattura prima di generare l’XML.',
+      foreignPrivate: 'Per un privato estero senza partita IVA l’XML non è supportato da questa app.',
+      missingIdentifier: 'Il cliente non ha né partita IVA né codice fiscale.',
+    },
   },
 }
