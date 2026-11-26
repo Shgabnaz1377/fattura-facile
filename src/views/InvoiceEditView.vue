@@ -128,6 +128,21 @@ async function duplicate(): Promise<void> {
   await router.push(`/invoices/${copy.id}`)
 }
 
+const exportError = ref('')
+async function downloadPdf(): Promise<void> {
+  exportError.value = ''
+  if (!client.value || !totals.value) {
+    exportError.value = t('blockers.missingClient')
+    return
+  }
+  const [{ buildInvoiceDocument }, { renderInvoicePdf, downloadBytes }] = await Promise.all([
+    import('@/domain/document'),
+    import('@/pdf/invoicePdf'),
+  ])
+  const doc = buildInvoiceDocument(invoice.value, profile.value, client.value, totals.value)
+  downloadBytes(await renderInvoicePdf(doc), doc.fileName, 'application/pdf')
+}
+
 function safeLineAmount(cents: number, qty: number): string {
   try {
     return fmt.euro(lineAmount(cents, qty))
@@ -299,6 +314,11 @@ function safeLineAmount(cents: number, qty: number): string {
 
         <aside class="side-col">
           <InvoiceTotalsPanel v-if="totals" :totals="totals" />
+          <section class="card exports" :aria-label="t('exports.title')">
+            <h2>{{ t('exports.title') }}</h2>
+            <button type="button" class="btn" :disabled="!client" @click="downloadPdf">{{ editable ? t('exports.pdfDraft') : t('exports.pdf') }}</button>
+            <p v-if="exportError" class="error-text" role="alert">{{ exportError }}</p>
+          </section>
           <p v-if="forfettario" class="muted small">{{ t('invoices.forfettarioNote') }}</p>
         </aside>
       </div>
@@ -408,5 +428,17 @@ legend {
 
 .actions-card {
   margin-top: 16px;
+}
+
+.exports {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.exports h2 {
+  font-size: 1rem;
+  margin: 0;
 }
 </style>
