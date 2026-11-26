@@ -6,6 +6,11 @@ export function newId(): string {
   return crypto.randomUUID()
 }
 
+/** Deep copy of plain data; also strips Vue reactive proxies, which structuredClone rejects. */
+export function deepCopy<T>(value: T): T {
+  return JSON.parse(JSON.stringify(value)) as T
+}
+
 export function nowIso(): string {
   return new Date().toISOString()
 }

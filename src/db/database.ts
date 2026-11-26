@@ -1,4 +1,5 @@
 import Dexie, { type EntityTable } from 'dexie'
+import { deepCopy } from '@/domain/factories'
 import type { Client, Invoice } from '@/domain/types'
 
 /** Key/value record for singletons: the business profile, INPS parameters, per-year inputs. */
@@ -37,10 +38,8 @@ export async function getSetting<T>(key: string): Promise<T | undefined> {
 
 export async function putSetting(key: string, value: unknown): Promise<void> {
   // Store plain data: Vue reactive proxies cannot be structured-cloned into IndexedDB.
-  await db.settings.put({ key, value: JSON.parse(JSON.stringify(value)) })
+  await db.settings.put({ key, value: deepCopy(value) })
 }
 
 /** Deep copy into a plain object so reactive state can be persisted. */
-export function plain<T>(value: T): T {
-  return JSON.parse(JSON.stringify(value)) as T
-}
+export const plain = deepCopy
