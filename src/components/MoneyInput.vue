@@ -1,12 +1,19 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { fromCents, toCents } from '@/domain/money'
 
 /** Euro amount input bound to integer cents. Accepts both "1234,50" and "1234.50". */
 defineProps<{ label: string; id?: string; invalid?: boolean }>()
 const cents = defineModel<number>({ required: true })
 
-const format = (c: number) => (c === 0 ? '' : fromCents(c).toFixed(2))
+const { locale } = useI18n()
+// Italian uses a decimal comma; parsing accepts both separators.
+const format = (c: number) => {
+  if (c === 0) return ''
+  const fixed = fromCents(c).toFixed(2)
+  return locale.value === 'it' ? fixed.replace('.', ',') : fixed
+}
 const text = ref(format(cents.value))
 watch(cents, (c) => {
   if (toCents(parse(text.value) ?? 0) !== c) text.value = format(c)
