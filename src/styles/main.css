@@ -16,6 +16,8 @@
   --success: #1e6b33;
   --success-soft: #e0f2e4;
   --focus: #2a7de1;
+  /* Chart mark colour, checked with the dataviz palette validator against the light surface. */
+  --chart-1: #0f8a6c;
   --radius: 10px;
   --shadow: 0 1px 2px rgb(0 0 0 / 6%), 0 2px 8px rgb(0 0 0 / 4%);
   --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -42,6 +44,7 @@
     --success: #7ed99a;
     --success-soft: #19331f;
     --focus: #7fb5ff;
+    --chart-1: #2fb68c;
     --shadow: none;
     color-scheme: dark;
   }
@@ -65,6 +68,7 @@
   --success: #7ed99a;
   --success-soft: #19331f;
   --focus: #7fb5ff;
+  --chart-1: #2fb68c;
   --shadow: none;
   color-scheme: dark;
 }
