@@ -15,10 +15,11 @@ const ready = ref(false)
 const loadError = ref('')
 
 const links = [
-  { to: '/', label: 'nav.home' },
+  { to: '/', label: 'nav.dashboard' },
   { to: '/invoices', label: 'nav.invoices' },
   { to: '/clients', label: 'nav.clients' },
   { to: '/profile', label: 'nav.profile' },
+  { to: '/data', label: 'nav.data' },
 ]
 
 onMounted(async () => {
