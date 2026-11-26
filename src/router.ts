@@ -2,7 +2,14 @@ import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-rou
 import HomeView from './views/HomeView.vue'
 
 // Hash history keeps the static build working on any host without rewrite rules.
-export const routes: RouteRecordRaw[] = [{ path: '/', name: 'home', component: HomeView }]
+export const routes: RouteRecordRaw[] = [
+  { path: '/', name: 'home', component: HomeView },
+  { path: '/clients', name: 'clients', component: () => import('./views/ClientsView.vue') },
+  { path: '/clients/new', name: 'client-new', component: () => import('./views/ClientEditView.vue') },
+  { path: '/clients/:id', name: 'client-edit', component: () => import('./views/ClientEditView.vue'), props: true },
+  { path: '/profile', name: 'profile', component: () => import('./views/ProfileView.vue') },
+  { path: '/:pathMatch(.*)*', redirect: '/' },
+]
 
 export const router = createRouter({
   history: createWebHashHistory(),
